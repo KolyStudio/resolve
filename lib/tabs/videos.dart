@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import 'package:snapkit/snapkit.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VideoTab extends StatefulWidget {
   const VideoTab({Key? key}) : super(key: key);
@@ -43,12 +44,10 @@ class _VideoTabState extends State<VideoTab> {
     setState(() => this.video = videoTemp);
     final Directory extDir = await getApplicationDocumentsDirectory();
     String dirPath = extDir.path;
-    final File localVideo = await videoTemp.copy('$dirPath/video.mp4');
+    // final File localVideo = await videoTemp.copy('$dirPath/video.mp4');
 
     setState(() {
-      if (video != null) {
-        videoP = video.path;
-      }
+      videoP = video.path;
     });
 
     setState(() {
@@ -79,19 +78,28 @@ class _VideoTabState extends State<VideoTab> {
       backgroundColor: Colors.black87,
       body: Center(
         child: GestureDetector(
-          onTap: () {
-            pickVideo();
-          },
-          child: (videoP != null)
-              ? AspectRatio(
-                  aspectRatio: 9 / 16,
-                  child: VideoPlayer(controller!),
-                )
-              : Image.asset(
-                  'assets/images/video.png',
-                  width: 70,
-                ), //
-        ),
+            onTap: () {
+              pickVideo();
+            },
+            child: (videoP != null)
+                ? AspectRatio(
+                    aspectRatio: 9 / 16,
+                    child: VideoPlayer(controller!),
+                  )
+                : ClipRRect(
+                    borderRadius: BorderRadius.circular(15), // Image border
+                    child: SizedBox.fromSize(
+                      size: Size.fromRadius(30), // Image radius
+                      child: Image.asset('assets/images/video.png',
+                          width: 70, fit: BoxFit.cover),
+                    ),
+                  )
+
+            // : Image.asset(
+            //     'assets/images/video.png',
+            //     width: 70,
+            //   ), //
+            ),
       ),
       bottomNavigationBar: BottomAppBar(
           child: Container(
@@ -113,13 +121,14 @@ class _VideoTabState extends State<VideoTab> {
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
                           minWidth: double.infinity,
-                          color: Colors.yellow,
+                          color: Colors.white,
                           onPressed: () {
                             sendVideo();
                           },
-                          child: const Text('SNAPPER LA VIDÉO',
-                              style:
-                                  TextStyle(fontWeight: FontWeight.bold))))))),
+                          child: Text('SNAPPER LA VIDÉO',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w700,
+                              ))))))),
     );
   }
 }

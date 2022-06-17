@@ -1,4 +1,4 @@
-package com.live.snap;
+package com.live.e;
 
 import io.flutter.embedding.android.FlutterActivity;
 
